@@ -1,0 +1,33 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proceedtobuy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: proceedtobuy
+  template:
+    metadata:
+      labels:
+        app: proceedtobuy
+    spec:
+      containers:
+      - name: proceedtobuy
+        image: rmsystemcontainer.azurecr.io/rmsproceedtobuyimage:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: webapisvssecret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proceedtobuy-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: proceedtobuy
